@@ -1,0 +1,291 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	12pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% Template-specific packages
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage{amsmath}
+\usepackage{graphicx} % Required for including images
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Homework \#1} % Assignment title
+
+\author{Fanyi Meng (223015127)} % Student name
+
+\date{January 13th, 2024} % Due date
+
+\institute{The Chinese University of Hongkong, Shenzhen \\ Computer and Information Engineering} % Institute or school name
+
+\class{Advanced Machine Learning (AIR 6002)} % Course or class name
+
+\professor{Prof Tongxin Li} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Question 1: Basics}
+\begin{problem}
+
+	
+	\begin{enumerate}[(\itshape a\normalfont)]
+		\itemsep0.3em
+		\parskip0.3em
+		\item What is a hypothesis set?
+		\item What is the hypothesis set of a linear model?
+		\item What is overfitting?
+		\item What are two ways to prevent overfitting?
+		\item What are training data and test data, and how are they used differently? Why should you never change your model based on information from test data?
+		\item What are the two assumptions we make about how our dataset is sampled?
+		\item Consider the machine learning problem of deciding whether or not an email is spam. What could \(X\), the input space, be? What could \(Y\), the output space, be?
+		\item What is the \(k\)-fold cross-validation procedure?
+	\end{enumerate}
+	
+
+\end{problem}
+\subsection*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\itemsep0.3em
+	\parskip0.3em
+	\item What is a hypothesis set?
+	\item What is the hypothesis set of a linear model?
+	\item What is overfitting?
+	\item What are two ways to prevent overfitting?
+	\item What are training data and test data, and how are they used differently? Why should you never change your model based on information from test data?
+	\item What are the two assumptions we make about how our dataset is sampled?
+	\item Consider the machine learning problem of deciding whether or not an email is spam. What could \(X\), the input space, be? What could \(Y\), the output space, be?
+	\item What is the \(k\)-fold cross-validation procedure?
+\end{enumerate}
+
+%------------------------------------------------
+%----------------------------------------------------------------------------------------
+
+\section*{Question 2: Bias-Variance Tradeoff}
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\itemsep0.3em
+	\parskip0.3em
+	\item Derive the bias-variance decomposition for the squared error loss function. That is, show that for a model $f_S$ trained on a dataset $S$ to predict a target $y(x)$ for each $x$,
+
+	$$
+	\begin{aligned}\mathbb{E}_{S}\left[E_{\mathrm{out}}\:(f_{S})\right]=\mathbb{E}_{x}[\mathrm{Bias}(x)+\mathrm{Var}(x)]\end{aligned}
+	$$
+	$\mathrm{given~the~following~definitions: }$
+
+$$
+\begin{aligned}
+F(x)& =\mathbb{E}_{S}\left[f_{S}(x)\right]  \\
+E_{\mathrm{out}}\:(f_{S})& =\mathbb{E}_x\left[\left(f_S(x)-y(x)\right)^2\right]  \\
+\operatorname{Bias}(x)& =(F(x)-y(x))^{2}  \\
+\operatorname{Var}(x)& =\mathbb{E}_{S}\left[(f_{S}(x)-F(x))^{2}\right] 
+\end{aligned}
+$$
+
+	\item For each \( N \in \{ 20, 25, 30, 35, \cdots, 100\} \):
+	\begin{enumerate}[i.]
+	  \item Perform 5-fold cross-validation on the first \( N \) points in the dataset (setting aside the other points), computing both the training and validation error for each fold.
+		\begin{itemize}
+		  \item Use the mean squared error loss as the error function.
+		  \item Use NumPy's \texttt{polyfit} method to perform the degree-\( d \) polynomial regression, and NumPy's \texttt{polyval} method to help compute the errors. (Refer to example code and NumPy documentation for details.)
+		  \item When partitioning your data into folds, divide the data into \( K \) contiguous blocks (though in practice, you should randomize your partitions, for the purpose of this exercise, use contiguous blocks).
+		\end{itemize}
+	  \item Compute the average of the training and validation errors from the 5 folds.
+	  \item Create a learning curve by plotting both the average training and validation error as functions of \( N \).
+	\end{enumerate}
+  
+	
+
+\end{enumerate}
+\end{problem}
+
+%------------------------------------------------
+\subsection*{Answer}
+
+While this question leaves out the crucial element of the geographic origin of the swallow, according to Jonathan Corum, an unladen European swallow maintains a cruising airspeed velocity of \textbf{11 metres per second}, or \textbf{24 miles an hour}. The velocity of the corresponding African swallows requires further research as kinematic data is severely lacking for these species.
+
+%----------------------------------------------------------------------------------------
+\section*{Question 3}
+
+\begin{problem}
+	Find the closed-form solutions of the following optimization problems $(\mathbf{W}\in\mathbb{R}^{K\times D},N\gg D>$ $K)\colon$
+	\medskip
+    \begin{enumerate}[(\itshape a\normalfont)]
+		\itemsep0.3em
+		\parskip0.3em
+		
+	\item $\underset{W, b}{\min}\sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2$  
+	\item $\underset{W, b}{\min}\sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2+ \frac \lambda2\|\mathbf{W} \|_F^2$
+\end{enumerate}
+\end{problem}
+\subsection*{Answer}
+%------------------------------------------------
+
+\section*{Question 4}
+
+\begin{problem}
+ Consider the following problem
+
+$$
+\underset{\mathbf{W}}{\min}\:\frac12\|\mathbf{W}\Phi-\mathbf{Y}\|_{F}^{2}+\frac\lambda2\|\mathbf{W}\|_{F}^{2}
+$$
+
+where $\|\cdot \|_F$ denotes the Frobenius norm; $Y \in \mathbb{R} ^K\times N, \Phi= [ \phi( \mathbf{x} _1) , \phi( \mathbf{x} _2) , \ldots , \phi( \mathbf{x} _N) ] , \mathbf{x} _i\in \mathbb{R} ^D, $ $i=1,2,\ldots,N$ and $\phi$ is the feature map induced by a kernel function $k(\cdot,\cdot)$. Prove that for any x$\in \mathbb{R} ^D, $ we can make prediction as
+
+$$
+\mathbf{y}=\mathbf{W}\phi(\mathbf{x})=\mathbf{Y}\left(\mathbf{K}+\lambda\mathbf{I}\right)^{-1}\mathbf{k}(\mathbf{x}),
+$$
+
+where $\mathbf{K} = \Phi^\top\Phi$ and $\mathbf{k}(\mathbf{x}) = [k(\mathbf{x}_1, \mathbf{x}), k(\mathbf{x}_2, \mathbf{x}), \ldots, k(\mathbf{x}_N, \mathbf{x})]^\top$.
+\end{problem}
+\subsection*{Answer}
+
+\section*{Question 5}
+
+\begin{problem}
+	Compute the space and time complexities (in the form of big O, consider only the training
+stage) of the following algorithms:
+\begin{enumerate}[(\itshape a\normalfont)]
+\item Ridge regression (Question 2(b)) with the closed-form solution 
+\item $N$ data points of $D\mathrm{- dimension, ~choose~}d$ principal components$) $
+\item Neural network with architecture $D-H_1-H_2-K$ on a mini-batch of size $B$ (consider only
+the forward process and neglect the computational costs of activation functions) 
+
+[Hint: the time complexity of $A\in\mathbb{R}^{m\times n}\times B\in\mathbb{R}^{n\times l}$ is $O(mnl);$ the time complexities of
+ eigenvalue decomposition and inverse of an $n\times n$ matrix are both $O(n^3).]$
+\end{enumerate}
+\end{problem}
+\subsection*{Answer}
+
+
+\section*{Question 6}
+
+\begin{problem}
+	Prove the convergence of the generic gradient boosting algorithm (AnyBoost). Specifically, suppose in the algorithm of AnyBoost (page 14 of Lecture 02), the gradient of the objective function $\mathcal{L}$ is L-Lipschitz continuous, i.e., there exists $L>0$ such that
+
+$$
+\|\nabla\mathcal{L}(H)-\nabla\mathcal{L}(H^{\prime})\|\leq L\|H-H^{\prime}\|
+$$
+
+holds for any $H$ and $H^{\prime}$. Suppose in the algorithm, $\alpha$ is computed as
+
+$$
+\alpha_{t+1}=-\frac{\langle\nabla\mathcal{L}(H_{t}),h_{t+1}\rangle}{L\|h_{t+1}\|^{2}}.
+$$
+
+Then the ensemble model is updated as $H_{t+1}=H_t+\alpha_{t+1}h_{t+1}.$ Prove that the algorithm either terminates at round $T$ with $\langle\nabla\mathcal{L}(H_t),h_{t+1}\rangle$ or $\mathcal{L}(H_t)$ converges to a finite value, in which case
+
+$$
+\operatorname*{lim}_{t\to\infty}\langle\nabla\mathcal{L}(H_{t}),h_{t+1}\rangle=0.
+$$
+
+* [Hint: Using the following result: Suppose $\mathcal{L} : \mathcal{H} \to \mathbb{R} $ and $\|\nabla\mathcal{L} ( F) - \nabla\mathcal{L} ( G) \|\leq L\|F- G\|$ holds for any $F$ and $G$ in $\mathcal{H} $, then $\mathcal{L}(F+wG)-\mathcal{L}(F)\leq w\langle\nabla\mathcal{L}(F),G\rangle+\frac{Lw^2}2\|G\|^2$ holds for any $w>0.]$
+
+\end{problem}
+\subsection*{Answer}
+
+\section*{Question 7:SGD}
+
+\begin{problem}
+	Linear regression learns a model of the form:
+	$$f\left(x_{1},x_{2},\cdots,x_{d}\right)=\left(\sum_{i=1}^{d}w_{i}x_{i}\right)+b$$
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\item We can make our algebra and coding simpler by writing $f\left(x_1,x_2,\cdots,x_d\right)=\mathbf{w}^T\mathbf{x}$ for vectors w and x. But at first glance, this formulation seems to be missing the bias term $b$ from the equation above. How should we define x and w such that the model includes the bias term?
+	
+\end{enumerate}
+\medskip
+Linear regression learns a model bv minimizing the squared loss function $L$, which is the sum across all training data $\{(\mathbf{x}_1,y_1),\cdots,(\mathbf{x}_N,y_N)\}$ of the squared difference between actual and predicted output values:
+$$L(f)=\sum_{i=1}^N\left(y_i-\mathbf{w}^T\mathbf{x}_i\right)^2$$
+\begin{enumerate}[(\itshape b\normalfont)]
+	\item We can make our algebra and coding simpler by writing $f\left(x_1,x_2,\cdots,x_d\right)=\mathbf{w}^T\mathbf{x}$ for vectors w and x. But at first glance, this formulation seems to be missing the bias term $b$ from the equation above. How should we define x and w such that the model includes the bias term?
+
+\end{enumerate}
+(c)-(f) Coding Part.
+\end{problem}
+\subsection*{Answer}
+
+\section*{Question 8}
+
+\begin{problem}
+True or False? If False, then explain shortly.
+\medskip
+\begin{enumerate}[(\itshape a\normalfont)]
+\item The inequality $G(\mathcal{F},n)\leq n^2$ holds for any model class $\mathcal{F}.$
+\item The VC dimension of an axis-aligned rectangle in a 2D space is 4.
+\item The VC dimension of a circle in a 2D space is 4.
+\item The VC dimension of 1-nearest neighbor classifier in $d$-dimensional space is $d+1.$
+\item Let $d$ be the VC dimension of $\mathcal{F}$. Then the inequality $G(\mathcal{F},n)\leq\left(\frac{en}d\right)^d$ always holds.
+\end{enumerate}
+\end{problem}
+\subsection*{Answer}
+
+
+\section*{Question 9}
+
+\begin{problem}
+In LASSO, the model class is defined as $\mathcal{F}=\{\mathbf{x}\mapsto\langle\mathbf{w},\mathbf{x}\rangle:\|\mathbf{w}\|_1\leq\alpha\}.$ Suppose $\mathbf{x}\in\mathbb{R}^d$, $y\in \{ - 1, + 1\} , $ the training data are $S= \{ ( \mathbf{x} _i, y_i) \} _i= 1^n, \text{ and max}_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta, $ where $\|\cdot \|_\infty$ denotes the largest absolute element of a vector.
+\begin{enumerate}[(\itshape a\normalfont)]
+\item Find an upper bound of the empirical Rademacher complexit, where $\sigma_i$ are the Rademacher variables. 
+\item Suppose the loss function is the absolute loss. Use the inequality (highlighted in blue) on page
+$30$ and Lemma 5 on page 35 (i.e., $(\mathrm{i.e.},\mathcal{R}(\ell\circ\mathcal{F})\leq\eta\mathcal{R}(\mathcal{F}))$) of Lecture 03 to derive a generalization error bound for LASSO.
+
+
+  * Hint: For question (a), please use the inequality $\langle\mathbf{a},\mathbf{b}\rangle\leq\|\mathbf{a}\|_1\|\mathbf{b}\|_\infty$ and the following lemma:
+
+
+  \textbf{Lemma 1.} Let \( A \subseteq \mathbb{R}^n \) be a finite set of points with \( r = \max_{\mathbf{x} \in A} \|\mathbf{x}\|_2 \) and denote \( \mathbf{x} = (x_1, x_2, \ldots, x_n) \). Then
+  $$\mathbb{E}_{\sigma}\left[\max_{\mathbf{x}\in A}\sum_{i=1}^nx_i\sigma_i\right]\leq r\sqrt{2\log|A|}$$
+$where\:|A|\:denotes\:the\:cardinality\:of\:set\:A\:and\:\sigma_i\:are\:the\:Rademacher\:variables.$
+\end{enumerate}
+\end{problem}
+\subsection*{Answer}
+
+
+
+%------------------------------------------------
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
