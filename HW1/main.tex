@@ -46,7 +46,7 @@
 
 \author{Fanyi Meng (223015127)} % Student name
 
-\date{January 13th, 2024} % Due date
+\date{January 31st, 2024} % Due date
 
 \institute{The Chinese University of Hongkong, Shenzhen \\ Computer and Information Engineering} % Institute or school name
 
@@ -86,14 +86,15 @@
 \begin{enumerate}[(\itshape a\normalfont)]
 	\itemsep0.3em
 	\parskip0.3em
-	\item What is a hypothesis set?
-	\item What is the hypothesis set of a linear model?
-	\item What is overfitting?
-	\item What are two ways to prevent overfitting?
-	\item What are training data and test data, and how are they used differently? Why should you never change your model based on information from test data?
-	\item What are the two assumptions we make about how our dataset is sampled?
-	\item Consider the machine learning problem of deciding whether or not an email is spam. What could \(X\), the input space, be? What could \(Y\), the output space, be?
-	\item What is the \(k\)-fold cross-validation procedure?
+	\item Hypothesis set contains all possible models on a specific dataset.
+	\item Hypothesis set of a linear model means the model can be represented by linear model with its parametes. It can be writen as: $y = \sum_{i = 1}^{n}\theta_i x_i+\theta_0  $
+	\item Overfitting means the model performs well in the train model but not as well in test model, because the model learns some irrelevant knowledge or random noise. 
+	\item Adding Regularization and using a lower learning rate can prevent overfitting.
+	\item Training data is used to train the model and test data is used to test the model's performance. Changing model based on information from test data will improve the performance incorrectly 
+	because the model have "seen" the test data, which would cause the model can't have a matched performance in read-world data.
+	\item Indepedent and Identically Distributed.
+	\item \textbf{Input}:Email Address, Email Content, the network information(IP/MAC Address) \textbf{Output}:spam or not
+	\item Firstly the dataset is devided into k subsets, and then the model will be trained for k times, in each time one subset will be used to test the model and the other subsets will be used to trian. Finally the final model performance will be calculated as the average of the k models.
 \end{enumerate}
 
 %------------------------------------------------
