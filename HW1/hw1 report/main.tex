@@ -82,7 +82,7 @@
 	
 
 \end{problem}
-\subsection*{Answer}
+\section*{Answer}
 \begin{enumerate}[(\itshape a\normalfont)]
 	\itemsep0.3em
 	\parskip0.3em
@@ -140,10 +140,28 @@ $$
 \end{problem}
 
 %------------------------------------------------
-\subsection*{Answer}
-
-While this question leaves out the crucial element of the geographic origin of the swallow, according to Jonathan Corum, an unladen European swallow maintains a cruising airspeed velocity of \textbf{11 metres per second}, or \textbf{24 miles an hour}. The velocity of the corresponding African swallows requires further research as kinematic data is severely lacking for these species.
-
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+\item 
+\begin{equation*}
+	\begin{aligned}
+		E_{out}(f_S) &= \mathbb{E}_x[(f_S(x)-y(x))^2] \\
+		 &= \mathbb{E}_x[f_S(x)^2-2f_S(x)y(x)+y(x)^2]
+	\end{aligned}
+\end{equation*}
+By rewriting $f_S(x)$ as $F(x)+(f_S(x)-F(x))$,$E_{out}(f_S)$ can be represented as 
+\begin{equation*}
+	\begin{aligned}
+	E_{out}(f_S)&=\mathbb{E}_x[(F(x)+(f_S(x)-F(x)))^2-2(F(x)+(f_S(x)-F(x)))y(x)+y(x)^2] \\
+	            &=\mathbb{E}_x[(F(x)-y(x))^2+(f_S(x)-F(x))^2+2(f_S(x)-F(x))(F(x)-y(x))] \\
+	\end{aligned}
+\end{equation*}
+As $F(x)=\mathbb{E}_{S}\left[f_{S}(x)\right]$, $\mathbb{E}_{S}(f_S(x)-F(x))(F(x)-y(x))$ equals to zero. So:
+\begin{equation*}
+	\mathbb{E}_{S}\left[E_{\mathrm{out}}\:(f_{S})\right]=\mathbb{E}_{X}[\underbrace{(F(x)-y(x))^{2}}_{\mathrm{Bias}(x)}+\underbrace{(f_{S}(x)-F(x))^2}_{\mathrm{Var}(x)}]
+\end{equation*}
+\item haha
+\end{enumerate}
 %----------------------------------------------------------------------------------------
 \section*{Question 3}
 
@@ -158,7 +176,21 @@ While this question leaves out the crucial element of the geographic origin of t
 	\item $\underset{W, b}{\min}\sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2+ \frac \lambda2\|\mathbf{W} \|_F^2$
 \end{enumerate}
 \end{problem}
-\subsection*{Answer}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item Denote $\overline{\mathbf{W}} = [b , w], \overline{\mathbf{x} _i} = [1 , x_i ]^\top$, then the objective function can be rewriten as:
+
+\begin{equation*}
+    \sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2 = \|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F
+\end{equation*}
+Then, the gradient on $\mathbf{W}$ is:
+\begin{equation*}
+    \frac{\nabla\|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F}{\nabla\overline{\mathbf{W}}}=2\overline{\mathbf{W}}\overline{\mathbf{X}} \overline{\mathbf{X}}^{\top}  - 2\mathbf{Y}\overline{\mathbf{X}}^{\top}
+\end{equation*}
+Let the gradient equals to zero, we can get the optimal $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} \right)^{-1} $
+
+\item Similarly,we can get the result $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} +\lambda\mathbf{I} \right)^{-1}$
+\end{enumerate}
 %------------------------------------------------
 
 \section*{Question 4}
@@ -178,8 +210,23 @@ $$
 
 where $\mathbf{K} = \Phi^\top\Phi$ and $\mathbf{k}(\mathbf{x}) = [k(\mathbf{x}_1, \mathbf{x}), k(\mathbf{x}_2, \mathbf{x}), \ldots, k(\mathbf{x}_N, \mathbf{x})]^\top$.
 \end{problem}
-\subsection*{Answer}
-
+\section*{Answer}
+By calculating the gradient, we get:
+\begin{equation*}
+	W \Phi^{\top}\Phi - Y\Phi + \lambda W = 0
+\end{equation*}
+\begin{equation*}
+	W = Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}
+\end{equation*}
+Considering $\mathbf{K} = \Phi^\top\Phi$ and $\mathbf{k}(\mathbf{x}) = \Phi\phi(x)^\top$.
+We can predict $y$ by:
+\begin{equation*}
+	\begin{aligned}
+		y &= W\phi(x) \\
+		  &= [Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}]\phi(x) \\
+		  &= Y(K + \lambda I)^{-1}k(x)
+	\end{aligned}
+\end{equation*}
 \section*{Question 5}
 
 \begin{problem}
@@ -195,7 +242,12 @@ the forward process and neglect the computational costs of activation functions)
  eigenvalue decomposition and inverse of an $n\times n$ matrix are both $O(n^3).]$
 \end{enumerate}
 \end{problem}
-\subsection*{Answer}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
+	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
+	\item \textbf{Time complexity:} ${\mathcal O}(BDH_1+BH_1H_2+BH_2K)$ \textbf{Space complexity:} ${\mathcal O}(BD+BH_1+BH_2+BK+DH_1+H_1H_2+H_2K)$
+\end{enumerate}
 
 
 \section*{Question 6}
@@ -222,8 +274,17 @@ $$
 * [Hint: Using the following result: Suppose $\mathcal{L} : \mathcal{H} \to \mathbb{R} $ and $\|\nabla\mathcal{L} ( F) - \nabla\mathcal{L} ( G) \|\leq L\|F- G\|$ holds for any $F$ and $G$ in $\mathcal{H} $, then $\mathcal{L}(F+wG)-\mathcal{L}(F)\leq w\langle\nabla\mathcal{L}(F),G\rangle+\frac{Lw^2}2\|G\|^2$ holds for any $w>0.]$
 
 \end{problem}
-\subsection*{Answer}
-
+\section*{Answer}
+By using the Hint, 
+\begin{equation*}
+	\begin{aligned}
+		\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t})& =\mathcal{L}(H_{t}+\alpha_{t+1}h_{t+1})-\mathcal{L}(H_{t})l  \\
+		&\leq\alpha_{t+1}\left<\nabla \mathcal{L}(H_{t}),h_{t+1}\right>+\frac{L\alpha _{t+1}^{2}\|h_{t+1}\|^{2}}{2} \\
+		& = -\frac{\langle\nabla \mathcal{L}(H_{t}),h_{t+1}\rangle^{2}}{2L\|h_{t+1}\|^{2}}.
+	\end{aligned}
+\end{equation*}
+Considering when $h_{T+1}=0$, the algorithm will terminate at time $T$, otherwise, which means $h_{t+1}\neq 0$ for all $t$
+ as $\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t}) \rightarrow 0$,  $\operatorname*{lim}_{t\to\infty}\langle\nabla\mathcal{L}(H_{t}),h_{t+1}\rangle$ will also converge to 0.
 \section*{Question 7:SGD}
 
 \begin{problem}
@@ -234,16 +295,19 @@ $$
 	
 \end{enumerate}
 \medskip
-Linear regression learns a model bv minimizing the squared loss function $L$, which is the sum across all training data $\{(\mathbf{x}_1,y_1),\cdots,(\mathbf{x}_N,y_N)\}$ of the squared difference between actual and predicted output values:
+Linear regression learns a model by minimizing the squared loss function $L$, which is the sum across all training data $\{(\mathbf{x}_1,y_1),\cdots,(\mathbf{x}_N,y_N)\}$ of the squared difference between actual and predicted output values:
 $$L(f)=\sum_{i=1}^N\left(y_i-\mathbf{w}^T\mathbf{x}_i\right)^2$$
 \begin{enumerate}[(\itshape b\normalfont)]
-	\item We can make our algebra and coding simpler by writing $f\left(x_1,x_2,\cdots,x_d\right)=\mathbf{w}^T\mathbf{x}$ for vectors w and x. But at first glance, this formulation seems to be missing the bias term $b$ from the equation above. How should we define x and w such that the model includes the bias term?
-
+	\item  SGD uses the gradient of the loss function to make incremental adjustments to the weight vector $w$. Derive the gradient of the squared loss function with respect to $w$ for linear regression.
 \end{enumerate}
 (c)-(f) Coding Part.
 \end{problem}
-\subsection*{Answer}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item By defineing $\mathbf{x} = (x_1,x_2,\cdots,x_d, 1)$ and $\mathbf{w} = (w_1,w_2,\cdots,x_n, b)$
+	\item $ \nabla \mathbf{w}= -2 \cdot (\mathbf{y_i} - \mathbf{x_i} \cdot \mathbf{w}) \mathbf{x_i}$
 
+\end{enumerate}
 \section*{Question 8}
 
 \begin{problem}
@@ -257,15 +321,22 @@ True or False? If False, then explain shortly.
 \item Let $d$ be the VC dimension of $\mathcal{F}$. Then the inequality $G(\mathcal{F},n)\leq\left(\frac{en}d\right)^d$ always holds.
 \end{enumerate}
 \end{problem}
-\subsection*{Answer}
-
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item \textbf{False}.  When n=1, $G(\mathcal{F},n)$ can take the value 2 for $f_1$ predict 1 and $f_2$ predict -1, but $n^2$ equals to 1.
+	\item \textbf{True}. 4 points can be scattered by 4 sides of rectangle.
+	\item \textbf{False}. VC dimension of a circle is 3.
+	\item \textbf{False}. VC dimension of 1-nearest neighbor classifier is infinity.
+	\item \textbf{False}. For $n=1$,$G(\mathcal{F},n)$ is 2 but $\left(\frac{en}d\right)^d<1$ for $d>e$
+\end{enumerate}
 
 \section*{Question 9}
 
 \begin{problem}
 In LASSO, the model class is defined as $\mathcal{F}=\{\mathbf{x}\mapsto\langle\mathbf{w},\mathbf{x}\rangle:\|\mathbf{w}\|_1\leq\alpha\}.$ Suppose $\mathbf{x}\in\mathbb{R}^d$, $y\in \{ - 1, + 1\} , $ the training data are $S= \{ ( \mathbf{x} _i, y_i) \} _i= 1^n, \text{ and max}_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta, $ where $\|\cdot \|_\infty$ denotes the largest absolute element of a vector.
+\medskip
 \begin{enumerate}[(\itshape a\normalfont)]
-\item Find an upper bound of the empirical Rademacher complexit, where $\sigma_i$ are the Rademacher variables. 
+\item Find an upper bound of the empirical Rademacher complexity, where $\sigma_i$ are the Rademacher variables. 
 \item Suppose the loss function is the absolute loss. Use the inequality (highlighted in blue) on page
 $30$ and Lemma 5 on page 35 (i.e., $(\mathrm{i.e.},\mathcal{R}(\ell\circ\mathcal{F})\leq\eta\mathcal{R}(\mathcal{F}))$) of Lecture 03 to derive a generalization error bound for LASSO.
 
@@ -278,9 +349,29 @@ $30$ and Lemma 5 on page 35 (i.e., $(\mathrm{i.e.},\mathcal{R}(\ell\circ\mathcal
 $where\:|A|\:denotes\:the\:cardinality\:of\:set\:A\:and\:\sigma_i\:are\:the\:Rademacher\:variables.$
 \end{enumerate}
 \end{problem}
-\subsection*{Answer}
-
-
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item The empirical Rademacher complexity can be written as :
+	\begin{equation*}
+		\begin{aligned}
+			\mathcal{R}(\mathcal{F}) & ={\mathbb{E}_{\sigma}}\left[\sup_{f\in\mathcal{F}}\frac1n\sum_{i=1}^n\sigma_i f(x_i)\right] \\
+									 & ={\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i \langle w_i, x_i \rangle \right]
+		\end{aligned}	
+	\end{equation*}
+	By using the inequality of $\langle\mathbf{a},\mathbf{b}\rangle\leq\|\mathbf{a}\|_1\|\mathbf{b}\|_\infty$
+	\begin{equation*}
+		\mathcal{R}(\mathcal{F})  \leq {\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty\right]								 
+	\end{equation*}
+	Then by using \textbf{Lemma 1},  $\|\mathbf{w}\|_1\leq\alpha\ max_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta $ and $\|\mathbf{w x}\|_2 \leq \|\mathbf{w}\|_2\|\mathbf{x}\|_2$ we can get the upper bound:
+	\begin{equation*}
+		\begin{aligned}
+		\mathcal{R}(\mathcal{F}) & \leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty\right]	\\	
+								 &\leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n\sigma_i \alpha \beta \right]	\\
+								 & \leq \frac1n\alpha \beta \sqrt{2\log n}
+	\end{aligned}
+	\end{equation*}
+	\item By using the f
+\end{enumerate}
 
 %------------------------------------------------
 
