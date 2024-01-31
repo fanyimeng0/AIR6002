@@ -31,7 +31,7 @@
 \usepackage{mathpazo} % Use the Palatino font
 \usepackage{amsmath}
 \usepackage{graphicx} % Required for including images
-
+\usepackage{hyperref}
 \usepackage{booktabs} % Required for better horizontal rules in tables
 
 \usepackage{listings} % Required for insertion of code
@@ -122,17 +122,7 @@ E_{\mathrm{out}}\:(f_{S})& =\mathbb{E}_x\left[\left(f_S(x)-y(x)\right)^2\right] 
 \end{aligned}
 $$
 
-	\item For each \( N \in \{ 20, 25, 30, 35, \cdots, 100\} \):
-	\begin{enumerate}[i.]
-	  \item Perform 5-fold cross-validation on the first \( N \) points in the dataset (setting aside the other points), computing both the training and validation error for each fold.
-		\begin{itemize}
-		  \item Use the mean squared error loss as the error function.
-		  \item Use NumPy's \texttt{polyfit} method to perform the degree-\( d \) polynomial regression, and NumPy's \texttt{polyval} method to help compute the errors. (Refer to example code and NumPy documentation for details.)
-		  \item When partitioning your data into folds, divide the data into \( K \) contiguous blocks (though in practice, you should randomize your partitions, for the purpose of this exercise, use contiguous blocks).
-		\end{itemize}
-	  \item Compute the average of the training and validation errors from the 5 folds.
-	  \item Create a learning curve by plotting both the average training and validation error as functions of \( N \).
-	\end{enumerate}
+	\item Coding Part.
   
 	
 
@@ -160,7 +150,8 @@ As $F(x)=\mathbb{E}_{S}\left[f_{S}(x)\right]$, $\mathbb{E}_{S}(f_S(x)-F(x))(F(x)
 \begin{equation*}
 	\mathbb{E}_{S}\left[E_{\mathrm{out}}\:(f_{S})\right]=\mathbb{E}_{X}[\underbrace{(F(x)-y(x))^{2}}_{\mathrm{Bias}(x)}+\underbrace{(f_{S}(x)-F(x))^2}_{\mathrm{Var}(x)}]
 \end{equation*}
-\item haha
+\item The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_2.ipynb}{Here}(Github Link)
+
 \end{enumerate}
 %----------------------------------------------------------------------------------------
 \section*{Question 3}
@@ -300,13 +291,24 @@ $$L(f)=\sum_{i=1}^N\left(y_i-\mathbf{w}^T\mathbf{x}_i\right)^2$$
 \begin{enumerate}[(\itshape b\normalfont)]
 	\item  SGD uses the gradient of the loss function to make incremental adjustments to the weight vector $w$. Derive the gradient of the squared loss function with respect to $w$ for linear regression.
 \end{enumerate}
-(c)-(f) Coding Part.
+(c)-(h) Coding Part.
 \end{problem}
 \section*{Answer}
 \begin{enumerate}[(\itshape a\normalfont)]
 	\item By defineing $\mathbf{x} = (x_1,x_2,\cdots,x_d, 1)$ and $\mathbf{w} = (w_1,w_2,\cdots,x_n, b)$
 	\item $ \nabla \mathbf{w}= -2 \cdot (\mathbf{y_i} - \mathbf{x_i} \cdot \mathbf{w}) \mathbf{x_i}$
-
+	\item - (h) The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part1.ipynb}{Part 1} and 
+	\href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part2.ipynb}{Part 2}(Github Link)
+	\begin{enumerate}[(\itshape 1\normalfont)]
+		\item As strating point varies, the distance between start points and the convergent point changes and converge time varies.
+		\item Dataset 1 is more regular, so easier to converge.
+	\end{enumerate}
+	\setcounter{enumi}{6}
+	\item For small $\eta$, Training loss decreases as the epochs grows.
+	\setcounter{enumi}{8}
+	\item Even closed-form solution exists, SGD is still useful since SGD can work on high-dimension data, in this case calculating inverse will have a huge cost. Also it performs well when parameter needs to be updated as new data added. 
+	\item By setting a threshold of loss function.
+	\item Perceptron converges faster than SGD algorithms for linear model.
 \end{enumerate}
 \section*{Question 8}
 
@@ -355,7 +357,7 @@ $where\:|A|\:denotes\:the\:cardinality\:of\:set\:A\:and\:\sigma_i\:are\:the\:Rad
 	\begin{equation*}
 		\begin{aligned}
 			\mathcal{R}(\mathcal{F}) & ={\mathbb{E}_{\sigma}}\left[\sup_{f\in\mathcal{F}}\frac1n\sum_{i=1}^n\sigma_i f(x_i)\right] \\
-									 & ={\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i \langle w_i, x_i \rangle \right]
+									 & ={\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n(\sigma_i \langle w_i, x_i \rangle + \|\mathbf{w}\|_1) \right]
 		\end{aligned}	
 	\end{equation*}
 	By using the inequality of $\langle\mathbf{a},\mathbf{b}\rangle\leq\|\mathbf{a}\|_1\|\mathbf{b}\|_\infty$
@@ -365,12 +367,20 @@ $where\:|A|\:denotes\:the\:cardinality\:of\:set\:A\:and\:\sigma_i\:are\:the\:Rad
 	Then by using \textbf{Lemma 1},  $\|\mathbf{w}\|_1\leq\alpha\ max_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta $ and $\|\mathbf{w x}\|_2 \leq \|\mathbf{w}\|_2\|\mathbf{x}\|_2$ we can get the upper bound:
 	\begin{equation*}
 		\begin{aligned}
-		\mathcal{R}(\mathcal{F}) & \leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty\right]	\\	
-								 &\leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n\sigma_i \alpha \beta \right]	\\
-								 & \leq \frac1n\alpha \beta \sqrt{2\log n}
+		\mathcal{R}(\mathcal{F}) & \leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n(\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty+\|\mathbf{w}\|_1)\right]	\\	
+								 &\leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n\sigma_i (\alpha \beta + \alpha) \right]	\\
+								 & \leq (\alpha \beta +\alpha) \sqrt{\frac{2\log n}{n}}
 	\end{aligned}
 	\end{equation*}
-	\item By using the f
+	\item By using the Lemma, we have
+	\begin{equation*}
+		\begin{aligned}
+			&\sup_{f\in\mathcal{F}}\left\{\mathbb{E}[\ell(f(x),y)]-\frac1n\sum_{t=1}^n\ell\left(f\left(x_t\right),y_t\right)\right\} \\
+			&\leq2\mathcal{R}_S(\ell\circ\mathcal{F})+3\sqrt{\frac{\log(2/\delta)}{2n}}\\
+			&\leq2\eta\mathcal{R}_S(\mathcal{F})+3\sqrt{\frac{\log(2/\delta)}{2n}} \\
+			&\leq2(\alpha \beta +\alpha) \sqrt{\frac{2\log n}{n}}+3\sqrt{\frac{\log(2/\delta)}{2n}}
+			\end{aligned}
+	\end{equation*} 
 \end{enumerate}
 
 %------------------------------------------------
