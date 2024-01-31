@@ -357,14 +357,14 @@ $where\:|A|\:denotes\:the\:cardinality\:of\:set\:A\:and\:\sigma_i\:are\:the\:Rad
 	\begin{equation*}
 		\begin{aligned}
 			\mathcal{R}(\mathcal{F}) & ={\mathbb{E}_{\sigma}}\left[\sup_{f\in\mathcal{F}}\frac1n\sum_{i=1}^n\sigma_i f(x_i)\right] \\
-									 & ={\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n(\sigma_i \langle w_i, x_i \rangle + \|\mathbf{w}\|_1) \right]
+									 & ={\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i (\langle w_i, x_i \rangle + \|\mathbf{w}\|_1) \right]
 		\end{aligned}	
 	\end{equation*}
 	By using the inequality of $\langle\mathbf{a},\mathbf{b}\rangle\leq\|\mathbf{a}\|_1\|\mathbf{b}\|_\infty$
 	\begin{equation*}
-		\mathcal{R}(\mathcal{F})  \leq {\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty\right]								 
+		\mathcal{R}(\mathcal{F})  \leq {\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\frac1n\sum_{i=1}^n\sigma_i( \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty+ \|\mathbf{w}\|_1)\right]								 
 	\end{equation*}
-	Then by using \textbf{Lemma 1},  $\|\mathbf{w}\|_1\leq\alpha\ max_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta $ and $\|\mathbf{w x}\|_2 \leq \|\mathbf{w}\|_2\|\mathbf{x}\|_2$ we can get the upper bound:
+	Then by using \textbf{Lemma 1},  $\|\mathbf{w}\|_1\leq\alpha $and$ \ max_{1\leq i\leq n}\|\mathbf{x} _i\|_\infty\leq \beta $  we can get the upper bound:
 	\begin{equation*}
 		\begin{aligned}
 		\mathcal{R}(\mathcal{F}) & \leq \frac1n{\mathbb{E}_{\sigma}}\left[\sup_{\substack{w_i\in\mathcal{W}\\x_i\in\mathcal{X}}}\sum_{i=1}^n(\sigma_i \|\mathbf{w_i}\|_1 \|\mathbf{x} _i\|_\infty+\|\mathbf{w}\|_1)\right]	\\	
