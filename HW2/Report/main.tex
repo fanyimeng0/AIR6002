@@ -1,0 +1,363 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	12pt, % Default font size, values between 10pt-12pt are allowed
+	%letterpaper, % Uncomment for US letter paper size
+	%spanish, % Uncomment for Spanish
+]{fphw}
+
+% Template-specific packages
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage{amsmath}
+\usepackage{graphicx} % Required for including images
+\usepackage{hyperref}
+\usepackage{booktabs} % Required for better horizontal rules in tables
+\usepackage{listings} % Required for insertion of code
+\usepackage{enumerate} % To modify the enumerate environment
+\usepackage{bbm}% from mathbbm.sty
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Homework \#2} % Assignment title
+
+\author{Fanyi Meng (223015127)} % Student name
+
+\date{March 31st, 2024} % Due date
+
+\institute{The Chinese University of Hongkong, Shenzhen \\ Computer and Information Engineering} % Institute or school name
+
+\class{Advanced Machine Learning (AIR 6002)} % Course or class name
+
+\professor{Prof Tongxin Li} % Professor or teacher in charge of the assignment
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Question 1: Adaboost}
+\begin{problem}
+
+	
+	\begin{enumerate}[(\itshape a\normalfont)]
+		\itemsep0.3em
+		\parskip0.3em
+		\item  Let $h_t: \mathbb{R}^m \rightarrow\{-1,1\}$ be the weak classifier obtained at step $t$, and let $\alpha_t$ be its weight. Recall that the final classifier is
+		$$
+		H(x)=\operatorname{sign}(f(x))=\operatorname{sign}\left(\sum_{i=1}^T \alpha_t h_t(x)\right).
+		$$
+		Suppose $\left\{\left(x_1, y_1\right), \ldots,\left(x_N, y_N\right)\right\} \subset \mathbb{R}^m \times\{-1,1\}$ is our training dataset. Show that the training set error of the final classifier can be bounded from above if an exponential loss function is used:
+
+		$$
+		E=\frac{1}{N} \sum_{i=1}^N \exp \left(-y_i f\left(x_i\right)\right) \geq \frac{1}{N} \sum_{i=1}^N \mathbbm{1}\left(H\left(x_i\right) \neq y_i\right)
+		$$
+		where $\mathbbm{1}$ is the indicator function.
+		\item Find $D_{T+1}(i)$ in terms of $Z_t, \alpha_t, x_i, y_i$, and the classifier $h_t$, where $T$ is the last timestep and $t \in\{1, \ldots, T\}$. Recall that $Z_t$ is the normalization factor for distribution $D_{t+1}$: 
+		$$
+		Z_t=\sum_{i=1}^N D_t(i) \exp \left(-\alpha_t y_i h_t\left(x_i\right)\right).
+		$$
+		\item Show that $E=\sum_{i=1}^N \frac{1}{N} e^{\sum_{t=1}^T-\alpha_t y_i h_t\left(x_i\right)}.$ 
+
+		\item Show that 
+		$$
+		E=\prod_{t=1}^T Z_t.
+		$$
+		\item Show that the normalizer $Z_t$ can be written as 
+		$$
+		Z_t=\left(1-\epsilon_t\right) \exp \left(-\alpha_t\right)+\epsilon_t \exp \left(\alpha_t\right)
+		$$
+		where $\epsilon_t$ is the training set error of weak classifier $h_t$ for the weighted dataset:
+		$$
+		\epsilon_t=\sum_{i=1}^N D_t(i) \mathbbm{1}\left(h_t\left(x_i\right) \neq y_i\right).
+		$$
+		
+	\end{enumerate}
+	
+
+\end{problem}
+\begin{problem}
+	\begin{enumerate}[(\itshape f\normalfont)]
+	\item We derived all of this because it is hard to directly minimize the training set error, but we can greedily minimize the upper bound $E$ on this error. Show that choosing $\alpha_t$ greedily to minimize $Z_t$ at each iteration leads to the choices in AdaBoost:  
+		$$
+		\alpha_t^*=\frac{1}{2} \ln \left(\frac{1-\epsilon_t}{\epsilon_t}\right).
+		$$
+		\item  \textbf{AIR6002} Implement the \url{GradientBoosting.fit()} and \url{AdaBoost.fit()} methods in the notebook ``Q1\_AdaBoost.ipynb" provided for you. 
+
+Some important notes and guidelines:
+
+
+		\begin{itemize}
+		\item For both methods, make sure to work with the class attributes provided to you. Namely, after \url{GradientBoosting.fit ()} is called, \url{self.clfs} should be appropriately filled with the \url{self.n_clfs} trained weak hypotheses. Similarly, after \url{AdaBoost.fit()} is called, \url{self.clfs} and \url{self.coefs} should be appropriately filled with the \url{self.n_clfs} trained weak hypotheses and their coefficients, respectively.
+		\item \url{AdaBoost.fit()} should additionally return an $(N, T)$ shaped numpy array D such that \url{D[:, t]} contains $D_{t+1}$ for each $t \in\{0, \ldots,$ \url{self.n_clfs}$\}$.
+
+		\item For the \url{AdaBoost.fit( )} method, use the 0/1 loss instead of the exponential loss.
+		\end{itemize} 
+
+
+
+\item \textbf{AIR6002}
+Plot the loss curves for gradient boosting and for AdaBoost. 
+Describe and explain the behaviour of the two loss curves you plot. You should consider two kinds of behaviours: the smoothness of the curves and the final values that the curves approach. 
+
+
+
+\item \textbf{AIR6002} Compare the final loss values of the two models. Which performed better on the classification dataset?
+% Solution I: Gradient boosting performed better on training but AdaBoost performed better on test. That is, AdaBoost performed better overall as it is naturally more inclined to a classification dataset (it uses classifiers as opposed to regressors). 
+
+
+
+\item \textbf{AIR6002}For AdaBoost, where are the dataset weights the largest, and where are they the smallest? 
+
+Hint: \textit{Watch how the dataset weights change across time in the animation.}
+
+\end{enumerate}
+\end{problem}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\itemsep0.3em
+	\parskip0.3em
+	\item Hypothesis set contains all possible models on a specific dataset.
+	\item Hypothesis set of a linear model means the model can be represented by linear model with its parametes. It can be writen as: $y = \sum_{i = 1}^{n}\theta_i x_i+\theta_0  $
+	\item Overfitting means the model performs well in the train model but not as well in test model, because the model learns some irrelevant knowledge or random noise. 
+	\item Adding Regularization and using a lower learning rate can prevent overfitting.
+	\item Training data is used to train the model and test data is used to test the model's performance. Changing model based on information from test data will improve the performance incorrectly 
+	because the model have "seen" the test data, which would cause the model can't have a matched performance in read-world data.
+	\item Indepedent and Identically Distributed.
+	\item \textbf{Input}:Email Address, Email Content, the network information(IP/MAC Address) \textbf{Output}:spam or not
+	\item Firstly the dataset is devided into k subsets, and then the model will be trained for k times, in each time one subset will be used to test the model and the other subsets will be used to trian. Finally the final model performance will be calculated as the average of the k models.
+\end{enumerate}
+
+%------------------------------------------------
+%----------------------------------------------------------------------------------------
+
+\section*{Question 2: Recommendation Systems}
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\itemsep0.3em
+	\parskip0.3em
+	\item What are the differences between collaborative filtering and content-based methods? 
+    
+
+
+    \item Suppose we have $m$ items and $n$ users. Let $\Omega$ be the set of indices of observed ratings given by the users on the items. Provide the objective function of content-based recommendation for users, where the model class is a neural network with two hidden layers. You need to define the notations clearly. In addition, explain how to make recommendations for a new user using your model. 
+\end{enumerate}
+  
+	
+
+
+\end{problem}
+
+%------------------------------------------------
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+\item 
+\begin{equation*}
+	\begin{aligned}
+		E_{out}(f_S) &= \mathbb{E}_x[(f_S(x)-y(x))^2] \\
+		 &= \mathbb{E}_x[f_S(x)^2-2f_S(x)y(x)+y(x)^2]
+	\end{aligned}
+\end{equation*}
+By rewriting $f_S(x)$ as $F(x)+(f_S(x)-F(x))$,$E_{out}(f_S)$ can be represented as 
+\begin{equation*}
+	\begin{aligned}
+	E_{out}(f_S)&=\mathbb{E}_x[(F(x)+(f_S(x)-F(x)))^2-2(F(x)+(f_S(x)-F(x)))y(x)+y(x)^2] \\
+	            &=\mathbb{E}_x[(F(x)-y(x))^2+(f_S(x)-F(x))^2+2(f_S(x)-F(x))(F(x)-y(x))] \\
+	\end{aligned}
+\end{equation*}
+As $F(x)=\mathbb{E}_{S}\left[f_{S}(x)\right]$, $\mathbb{E}_{S}(f_S(x)-F(x))(F(x)-y(x))$ equals to zero. So:
+\begin{equation*}
+	\mathbb{E}_{S}\left[E_{\mathrm{out}}\:(f_{S})\right]=\mathbb{E}_{X}[\underbrace{(F(x)-y(x))^{2}}_{\mathrm{Bias}(x)}+\underbrace{(f_{S}(x)-F(x))^2}_{\mathrm{Var}(x)}]
+\end{equation*}
+\item The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_2.ipynb}{Here}(Github Link)
+
+\end{enumerate}
+%----------------------------------------------------------------------------------------
+\section*{Question 3:Spectral Clustering}
+
+\begin{problem}
+	Prove $\frac{\mathbf{u}^{\top} \mathbf{L u}}{\mathbf{u}^{\top} \mathbf{D u}}=\operatorname{Ncut}(A, B)$. See the definitions on page 23 of Lecture 05-I.
+\end{problem}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item Denote $\overline{\mathbf{W}} = [b , w], \overline{\mathbf{x} _i} = [1 , x_i ]^\top$, then the objective function can be rewriten as:
+
+\begin{equation*}
+    \sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2 = \|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F
+\end{equation*}
+Then, the gradient on $\mathbf{W}$ is:
+\begin{equation*}
+    \frac{\nabla\|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F}{\nabla\overline{\mathbf{W}}}=2\overline{\mathbf{W}}\overline{\mathbf{X}} \overline{\mathbf{X}}^{\top}  - 2\mathbf{Y}\overline{\mathbf{X}}^{\top}
+\end{equation*}
+Let the gradient equals to zero, we can get the optimal $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} \right)^{-1} $
+
+\item Similarly,we can get the result $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} +\lambda\mathbf{I} \right)^{-1}$
+\end{enumerate}
+%------------------------------------------------
+
+\section*{Question 4:Semi-supervised Learning }
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\item
+    Suppose $\mathbf{x}\in\mathbb{R}^d$ and $\mathbf{y}\in\mathbb{R}^k$ and the training data are $\{(\mathbf{x}_i,\mathbf{y}_i)\}_{i=1}^l\bigcup\{\mathbf{x}_i\}_{i=l+1}^n$. Let $\mathbf{A}\in\mathbb{R}^{n\times n}$ be an affinity matrix constructed from the training data. 
+	\begin{enumerate}[i)]
+	\item Show the objective function of linear regression with square loss and graph regularization. For simplicity, do not consider the bias term. 
+	\item Compute the gradient of the objective function with respect to the parameters. 
+	\item Is there a closed-form solution? If yes, find it.
+\end{enumerate}
+    \item In the label propagation algorithm, why do we need to use $\mathbf{D}^{-1}\mathbf{W}$ instead of $\mathbf{W}$? Why do we set $\hat{\mathbf{Y}}_l^{(t+1)} \leftarrow \mathbf{Y}_l$? If there are more than 2 classes, how do we set $\mathbf{Y}^{(0)}$? 
+\end{enumerate}
+\end{problem}
+\section*{Answer}
+By calculating the gradient, we get:
+\begin{equation*}
+	W \Phi^{\top}\Phi - Y\Phi + \lambda W = 0
+\end{equation*}
+\begin{equation*}
+	W = Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}
+\end{equation*}
+Considering $\mathbf{K} = \Phi^\top\Phi$ and $\mathbf{k}(\mathbf{x}) = \Phi\phi(x)^\top$.
+We can predict $y$ by:
+\begin{equation*}
+	\begin{aligned}
+		y &= W\phi(x) \\
+		  &= [Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}]\phi(x) \\
+		  &= Y(K + \lambda I)^{-1}k(x)
+	\end{aligned}
+\end{equation*}
+\section*{Question 5: Graph Neural Networks}
+
+\begin{problem}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item In GNN, given $\hat{\mathbf{A}}$, how to compute $\hat{\mathbf{A}}^c:=\underbrace{\hat{\mathbf{A}}\hat{\mathbf{A}}\cdots \hat{\mathbf{A}}}_c$ efficiently when $c$ is large? 
+    
+    \item Show the loss functions of node classification, graph classification, and link prediction. Explain your notations.
+    
+    \item Provide two examples of algorithms for each learning types or methods:
+    \begin{itemize}
+        \item parametric method
+        \item nonparametric method
+        \item inductive learning
+        \item transductive learning
+        \item semi-supervised learning
+    \end{itemize}
+\end{enumerate}
+\end{problem}
+
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
+	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
+	\item \textbf{Time complexity:} ${\mathcal O}(BDH_1+BH_1H_2+BH_2K)$ \textbf{Space complexity:} ${\mathcal O}(BD+BH_1+BH_2+BK+DH_1+H_1H_2+H_2K)$
+\end{enumerate}
+
+
+\section*{Question 6: Nonlinear Dimensionality Reduction}
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\item Show the algorithm of multidimensional scaling here. 
+    
+    \item Present a method for out-of-sample extension of t-SNE. In other words, reduce the dimension of new samples using the training result of t-SNE. 
+    
+    \item Given a dataset, suppose most of the samples are normal or good data, and there are a few outliers. Design a method or strategy to detect these outliers bassed on the methods learned in Lecture 07.
+\end{enumerate}
+\end{problem}
+\section*{Answer}
+By using the Hint, 
+\begin{equation*}
+	\begin{aligned}
+		\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t})& =\mathcal{L}(H_{t}+\alpha_{t+1}h_{t+1})-\mathcal{L}(H_{t})l  \\
+		&\leq\alpha_{t+1}\left<\nabla \mathcal{L}(H_{t}),h_{t+1}\right>+\frac{L\alpha _{t+1}^{2}\|h_{t+1}\|^{2}}{2} \\
+		& = -\frac{\langle\nabla \mathcal{L}(H_{t}),h_{t+1}\rangle^{2}}{2L\|h_{t+1}\|^{2}}.
+	\end{aligned}
+\end{equation*}
+Considering when $h_{T+1}=0$, the algorithm will terminate at time $T$, otherwise, which means $h_{t+1}\neq 0$ for all $t$
+ as $\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t}) \rightarrow 0$,  $\operatorname*{lim}_{t\to\infty}\langle\nabla\mathcal{L}(H_{t}),h_{t+1}\rangle$ will also converge to 0.
+\section*{Question 7: Generative Models}
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+	\item Derive the evidence lower bound (ELBO) for the VAE model. 
+
+    \item Derive the objective functions for the generator and discriminator in a GAN, respectively. 
+    
+
+    \item Briefly explain the relationship between diffusion models and Langevin dynamics.  
+\end{enumerate}
+\end{problem}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item By defineing $\mathbf{x} = (x_1,x_2,\cdots,x_d, 1)$ and $\mathbf{w} = (w_1,w_2,\cdots,x_n, b)$
+	\item $ \nabla \mathbf{w}= -2 \cdot (\mathbf{y_i} - \mathbf{x_i} \cdot \mathbf{w}) \mathbf{x_i}$
+	\item - (h) The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part1.ipynb}{Part 1} and 
+	\href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part2.ipynb}{Part 2}(Github Link)
+	\begin{enumerate}[(\itshape 1\normalfont)]
+		\item As strating point varies, the distance between start points and the convergent point changes and converge time varies.
+		\item Dataset 1 is more regular, so easier to converge.
+	\end{enumerate}
+	\setcounter{enumi}{6}
+	\item For small $\eta$, Training loss decreases as the epochs grows.
+	\setcounter{enumi}{8}
+	\item Even closed-form solution exists, SGD is still useful since SGD can work on high-dimension data, in this case calculating inverse will have a huge cost. Also it performs well when parameter needs to be updated as new data added. 
+	\item By setting a threshold of loss function.
+	\item Perceptron converges faster than SGD algorithms for linear model.
+\end{enumerate}
+\section*{Question 8: Graph Convolutional Network}
+
+\begin{problem}
+	\begin{enumerate}[(\itshape a\normalfont)]
+		\item \textbf{AIR6002} Implement the \url{GCNLayer.forward()} in the notebook ``Q8\_GCN.ipynb" provided for you. 
+	
+		\item \textbf{AIR6002} Define the adjacency matrix of the graph in the notebook with self-connections.  
+
+	
+		\item \textbf{AIR6002} Apply the GCN layer defined in (1) on the graph in (2), and write down the output features for all nodes. 
+	\end{enumerate}
+\end{problem}
+\section*{Answer}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item \textbf{False}.  When n=1, $G(\mathcal{F},n)$ can take the value 2 for $f_1$ predict 1 and $f_2$ predict -1, but $n^2$ equals to 1.
+	\item \textbf{True}. 4 points can be scattered by 4 sides of rectangle.
+	\item \textbf{False}. VC dimension of a circle is 3.
+	\item \textbf{False}. VC dimension of 1-nearest neighbor classifier is infinity.
+	\item \textbf{False}. For $n=1$,$G(\mathcal{F},n)$ is 2 but $\left(\frac{en}d\right)^d<1$ for $d>e$
+\end{enumerate}
+
+
+
+%------------------------------------------------
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
