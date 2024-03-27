@@ -1,0 +1,54 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Chen et~al.(2023)Chen, Spiridonova, Yang, Gao, and Li]{chen2023llava}
+W.-G. Chen, I.~Spiridonova, J.~Yang, J.~Gao, and C.~Li.
+\newblock Llava-interactive: An all-in-one demo for image chat, segmentation, generation and editing.
+\newblock \emph{arXiv preprint arXiv:2311.00571}, 2023.
+
+\bibitem[Ho et~al.(2020)Ho, Jain, and Abbeel]{ho2020denoising}
+J.~Ho, A.~Jain, and P.~Abbeel.
+\newblock Denoising diffusion probabilistic models.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:\penalty0 6840--6851, 2020.
+
+\bibitem[Mishra et~al.(2018)Mishra, Krishna~Reddy, Mittal, and Murthy]{mishra2018generative}
+A.~Mishra, S.~Krishna~Reddy, A.~Mittal, and H.~A. Murthy.
+\newblock A generative model for zero shot learning using conditional variational autoencoders.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition workshops}, pages 2188--2196, 2018.
+
+\bibitem[Ramesh et~al.(2022)Ramesh, Dhariwal, Nichol, Chu, and Chen]{ramesh2022hierarchical}
+A.~Ramesh, P.~Dhariwal, A.~Nichol, C.~Chu, and M.~Chen.
+\newblock Hierarchical text-conditional image generation with clip latents.
+\newblock \emph{arXiv preprint arXiv:2204.06125}, 2022.
+
+\bibitem[Rombach et~al.(2022)Rombach, Blattmann, Lorenz, Esser, and Ommer]{rombach2022high}
+R.~Rombach, A.~Blattmann, D.~Lorenz, P.~Esser, and B.~Ommer.
+\newblock High-resolution image synthesis with latent diffusion models.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 10684--10695, 2022.
+
+\bibitem[Saharia et~al.(2022)Saharia, Chan, Chang, Lee, Ho, Salimans, Fleet, and Norouzi]{saharia2022palette}
+C.~Saharia, W.~Chan, H.~Chang, C.~Lee, J.~Ho, T.~Salimans, D.~Fleet, and M.~Norouzi.
+\newblock Palette: Image-to-image diffusion models.
+\newblock In \emph{ACM SIGGRAPH 2022 Conference Proceedings}, pages 1--10, 2022.
+
+\bibitem[Wang et~al.(2018)Wang, Pu, Verma, Fan, Zhang, Chen, Rai, and Carin]{wang2018zero}
+W.~Wang, Y.~Pu, V.~Verma, K.~Fan, Y.~Zhang, C.~Chen, P.~Rai, and L.~Carin.
+\newblock Zero-shot learning via class-conditioned deep generative models.
+\newblock In \emph{Proceedings of the AAAI conference on artificial intelligence}, volume~32, 2018.
+
+\bibitem[Yang et~al.(2023)Yang, Huang, Zhou, Chen, Xu, Yuan, Zou, Lu, and Xie]{yang2023mm}
+J.~Yang, H.~Huang, Y.~Zhou, X.~Chen, Y.~Xu, S.~Yuan, H.~Zou, C.~X. Lu, and L.~Xie.
+\newblock Mm-fi: Multi-modal non-intrusive 4d human dataset for versatile wireless sensing.
+\newblock In \emph{Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track}, 2023.
+\newblock URL \url{https://openreview.net/forum?id=1uAsASS1th}.
+
+\bibitem[Yu and Aloimonos(2010)]{yu2010attribute}
+X.~Yu and Y.~Aloimonos.
+\newblock Attribute-based transfer learning for object categorization with zero/one training example.
+\newblock In \emph{Computer Vision--ECCV 2010: 11th European Conference on Computer Vision, Heraklion, Crete, Greece, September 5-11, 2010, Proceedings, Part V 11}, pages 127--140. Springer, 2010.
+
+\end{thebibliography}
