@@ -24,7 +24,7 @@
 	%letterpaper, % Uncomment for US letter paper size
 	%spanish, % Uncomment for Spanish
 ]{fphw}
-
+\usepackage{subcaption}
 % Template-specific packages
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
@@ -102,7 +102,8 @@
 
 \end{problem}
 \begin{problem}
-	\begin{enumerate}[(\itshape f\normalfont)]
+	\begin{enumerate}[(\itshape a\normalfont)]
+		\setcounter{enumi}{5}
 	\item We derived all of this because it is hard to directly minimize the training set error, but we can greedily minimize the upper bound $E$ on this error. Show that choosing $\alpha_t$ greedily to minimize $Z_t$ at each iteration leads to the choices in AdaBoost:  
 		$$
 		\alpha_t^*=\frac{1}{2} \ln \left(\frac{1-\epsilon_t}{\epsilon_t}\right).
@@ -138,19 +139,88 @@ Hint: \textit{Watch how the dataset weights change across time in the animation.
 
 \end{enumerate}
 \end{problem}
-\section*{Answer}
+\section*{Answer \footnote{Some of the Answer 1 were referenced from\url{https://cse.buffalo.edu/~jcorso/t/CSE555/files/lecture_boosting.pdf}}}
 \begin{enumerate}[(\itshape a\normalfont)]
 	\itemsep0.3em
 	\parskip0.3em
-	\item Hypothesis set contains all possible models on a specific dataset.
-	\item Hypothesis set of a linear model means the model can be represented by linear model with its parametes. It can be writen as: $y = \sum_{i = 1}^{n}\theta_i x_i+\theta_0  $
-	\item Overfitting means the model performs well in the train model but not as well in test model, because the model learns some irrelevant knowledge or random noise. 
-	\item Adding Regularization and using a lower learning rate can prevent overfitting.
-	\item Training data is used to train the model and test data is used to test the model's performance. Changing model based on information from test data will improve the performance incorrectly 
-	because the model have "seen" the test data, which would cause the model can't have a matched performance in read-world data.
-	\item Indepedent and Identically Distributed.
-	\item \textbf{Input}:Email Address, Email Content, the network information(IP/MAC Address) \textbf{Output}:spam or not
-	\item Firstly the dataset is devided into k subsets, and then the model will be trained for k times, in each time one subset will be used to test the model and the other subsets will be used to trian. Finally the final model performance will be calculated as the average of the k models.
+	\item 
+	
+	Since $f(x_i) = \text{sign}(f(x_i))\,|f(x_i)| = H(x_i)\,|f(x_i)| $
+	
+	
+	And:
+	\begin{itemize}
+	\item If \( H(x_i) \neq y_i \) then $ \mathbbm{1}(H(x_i) \neq y_i) $ \( = 1 \leq \)  \(  e^{|f(x_i)|} \).
+	\item If \( H(x_i) = y_i \) then  $ \mathbbm{1}(H(x_i) \neq y_i) $ \( = 0 \leq \)  \(  e^{-|f(x_i)|} \).
+	\end{itemize}
+	
+	So, the inequality holds for each term
+	\begin{equation*}
+		\mathbbm{1}(H(x_i) \neq y_i) \leq \exp(-y_i f(x_i)) 
+	\end{equation*}
+	
+	and hence, the inequality is true.
+	\item \begin{align*}
+		D_{T+1}(i) &= \frac{1}{Z_T} D_T(i) \exp(-\alpha_T y_i h_T(x_i))  \\
+				   &= \frac{1}{Z_T Z_{T-1}} D_{T-1}(i) \exp \left[ -y_i (\alpha_t h_T(x_i) + \alpha_{t-1} h_{T-1}(x_i)) \right] \\
+				   &= \cdots \\
+				   &= \frac{1}{Z_1 \cdots Z_T} D_1(i) \exp \left[ -y_i (\alpha_T h_T(x_i) + \cdots + \alpha_1 h_1(x_i)) \right] \\
+				   &= \prod_1^{T}\frac{1}{Z_t}\exp \left( -y_i \sum_{1}^{T}\alpha_t h_t\left(x_i\right)\right).	
+				\end{align*}
+	\item $E=\frac{1}{N} \sum_{i=1}^N \exp \left(-y_i f\left(x_i\right)\right)	$, so $E=\sum_{i=1}^N \frac{1}{N} e^{\sum_{t=1}^T-\alpha_t y_i h_t\left(x_i\right)}.$
+	\item Following (b), we also have $\sum_i^N D_{T+1}(i) = 1$, so 
+	\begin{equation*}
+		\sum_{i=1}^{n} D_t(x_i) = \prod_1^{T}\frac{1}{Z_t} \sum_{i=1}^{N} \frac{1}{N}\exp[-y_i f(x_i)] = 1 
+	\end{equation*}
+	implies:
+	\begin{equation*}
+		\prod_{t=1}^T Z_t=\frac{1}{N} \sum_{i=1}^N \exp \left(-y_i f\left(x_i\right)\right)=E. 
+	\end{equation*}
+	
+	\item The equation can be represented as :
+	\begin{equation*}
+		Z_t = \sum_{i}^{N} D_t(x_i) \exp [-y_i \alpha_t h_t(x_i)](\mathbbm{1}\left(h_t\left(x_i\right) = y_i\right)+\mathbbm{1}\left(h_t\left(x_i\right) \neq y_i\right))
+	\end{equation*}
+	As $y_i h_t(x_i) =1 $ when $h_t\left(x_i\right) = y_i$ and $y_i h_t(x_i) =-1 $ otherwise, so:
+	\begin{align*}
+		Z_t = &\sum_{i}^N D_t(i) \exp [-\alpha_t] \mathbbm{1}\left(h_t\left(x_i\right) = y_i\right) + \sum_{i}^N D_t(i) \exp [\alpha_t] \mathbbm{1}\left(h_t\left(x_i\right) \neq y_i\right)\\
+			= &\left(1-\epsilon_t\right) \exp \left(-\alpha_t\right)+\epsilon_t \exp \left(\alpha_t\right)
+	\end{align*}
+	
+
+	\item By calculating the gradient of (e):, we get:
+	\begin{equation*}
+		\left(\epsilon_t-1\right) \exp \left(-\alpha_t\right)+\epsilon_t \exp \left(\alpha_t\right) = 0
+	\end{equation*}
+	which implies: 
+	\begin{equation*}
+		\exp \left(\alpha_t\right) = \sqrt{\frac{1-\epsilon_t}{\epsilon_t}} 
+	\end{equation*}
+	so $$
+	\alpha_t^*=\frac{1}{2} \ln \left(\frac{1-\epsilon_t}{\epsilon_t}\right).
+	$$
+	\item The code can be viewed in the code part.
+	\item Gradient Boosting seems to be more smooth and has a good performance on training dataset, but something like overfitting probably occurs since the test loss grows as the n clfs grows.
+	Adaboost is not smooth but has a better performance on test dataset.
+	\item Adaboost. 
+	\item For the data which is predicted wrong in the origin model, the weights are larger. And for the data which has been predicted to be true, the weights are smaller.
+	
+	\begin{figure}[h!]
+		\centering
+		\begin{subfigure}[b]{0.45\textwidth}
+		  \includegraphics[width=\textwidth]{GB_loss.png}
+		  \caption{Gradient boosting Loss}
+		  \label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[b]{0.45\textwidth}
+		  \includegraphics[width=\textwidth]{AB_loss.png}
+		  \caption{Adaboost Loss}
+		  \label{fig:sub2}
+		\end{subfigure}
+		\caption{Loss curves for gradient boosting and for AdaBoost}
+		\label{fig:images}
+	  \end{figure}
 \end{enumerate}
 
 %------------------------------------------------
@@ -177,25 +247,40 @@ Hint: \textit{Watch how the dataset weights change across time in the animation.
 %------------------------------------------------
 \section*{Answer}
 \begin{enumerate}[(\itshape a\normalfont)]
-\item 
-\begin{equation*}
-	\begin{aligned}
-		E_{out}(f_S) &= \mathbb{E}_x[(f_S(x)-y(x))^2] \\
-		 &= \mathbb{E}_x[f_S(x)^2-2f_S(x)y(x)+y(x)^2]
-	\end{aligned}
-\end{equation*}
-By rewriting $f_S(x)$ as $F(x)+(f_S(x)-F(x))$,$E_{out}(f_S)$ can be represented as 
-\begin{equation*}
-	\begin{aligned}
-	E_{out}(f_S)&=\mathbb{E}_x[(F(x)+(f_S(x)-F(x)))^2-2(F(x)+(f_S(x)-F(x)))y(x)+y(x)^2] \\
-	            &=\mathbb{E}_x[(F(x)-y(x))^2+(f_S(x)-F(x))^2+2(f_S(x)-F(x))(F(x)-y(x))] \\
-	\end{aligned}
-\end{equation*}
-As $F(x)=\mathbb{E}_{S}\left[f_{S}(x)\right]$, $\mathbb{E}_{S}(f_S(x)-F(x))(F(x)-y(x))$ equals to zero. So:
-\begin{equation*}
-	\mathbb{E}_{S}\left[E_{\mathrm{out}}\:(f_{S})\right]=\mathbb{E}_{X}[\underbrace{(F(x)-y(x))^{2}}_{\mathrm{Bias}(x)}+\underbrace{(f_{S}(x)-F(x))^2}_{\mathrm{Var}(x)}]
-\end{equation*}
-\item The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_2.ipynb}{Here}(Github Link)
+\item Collaborative filtering  relies on the user-itsm interaction. It makes recommendations based on patterns of users' behavior with items, without requiring knowledge about the items themselves. Content-Based Methods focus on the properties of the items. Recommendations are made by analyzing the content of the items and the profile of the user's preferences. So Collaborative Filtering can provide more personalized recommendations and Content-Based  Methods  recommend items that are similar to what the user has liked before.
+\item \begin{table}[h]
+	\centering
+	\begin{tabular}{|c|l|}
+	\hline
+	\textbf{Notations} & \textbf{Description} \\
+	\hline
+	\( W^{(1)} \) & Weights of the first hidden layer \\
+	\( b^{(1)} \) & Biases of the first hidden layer \\
+	\( W^{(2)} \) & Weights of the second hidden layer \\
+	\( b^{(2)} \) & Biases of the second hidden layer \\
+	\( W^{(3)} \) & Weights of the output layer \\
+	\( b^{(3)} \) & Bias of the output layer \\
+	\( r_{ui} \)  & The element of the rating matrix \\
+	\( f_i \)  & The activation function of corresponding layer(e.g. ReLu) \\
+	\hline
+	
+	\end{tabular}
+	\caption{notations}
+	\label{tab:parameters}
+	\end{table}
+	Then the objective function can be represented as:
+	
+\begin{equation}
+	J(W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)}, W^{(3)}, b^{(3)}) = \frac{1}{|\Omega|} \sum_{(u,i)\in\Omega} (r_{ui} - \hat{r}_{ui})^2
+	\end{equation}
+	
+	where the predicted rating \( \hat{r}_{ui} \) is computed as:
+	
+	\begin{equation}
+	\hat{r}_{ui} = W^{(3)} f_2\left(W^{(2)} f_1\left(W^{(1)} Z_i + b^{(1)}\right) + b^{(2)}\right) + b^{(3)}
+	\end{equation}
+
+	To make recommendations for a new user, we need to collect some user's preferences and use the model to get $r_ui$. By sorting the score, we will recommend the top items.
 
 \end{enumerate}
 %----------------------------------------------------------------------------------------
@@ -205,20 +290,31 @@ As $F(x)=\mathbb{E}_{S}\left[f_{S}(x)\right]$, $\mathbb{E}_{S}(f_S(x)-F(x))(F(x)
 	Prove $\frac{\mathbf{u}^{\top} \mathbf{L u}}{\mathbf{u}^{\top} \mathbf{D u}}=\operatorname{Ncut}(A, B)$. See the definitions on page 23 of Lecture 05-I.
 \end{problem}
 \section*{Answer}
-\begin{enumerate}[(\itshape a\normalfont)]
-	\item Denote $\overline{\mathbf{W}} = [b , w], \overline{\mathbf{x} _i} = [1 , x_i ]^\top$, then the objective function can be rewriten as:
+Since \[ L = D - W \]
+and
+\[ D = \text{diag}(d_1, \ldots, d_N) \]
 
-\begin{equation*}
-    \sum _{i= 1}^N\|\mathbf{y} _i- \mathbf{W} \mathbf{x} _i- \mathbf{b} \|^2 = \|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F
-\end{equation*}
-Then, the gradient on $\mathbf{W}$ is:
-\begin{equation*}
-    \frac{\nabla\|\mathbf{Y} - \overline{\mathbf{W}}  \overline{\mathbf{X}} \|^2_F}{\nabla\overline{\mathbf{W}}}=2\overline{\mathbf{W}}\overline{\mathbf{X}} \overline{\mathbf{X}}^{\top}  - 2\mathbf{Y}\overline{\mathbf{X}}^{\top}
-\end{equation*}
-Let the gradient equals to zero, we can get the optimal $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} \right)^{-1} $
+And 
+\[ u_i = 
+\begin{cases} 
+\frac{1}{\sqrt{\text{vol}(A)}} & \text{if } i \in A \\
+-\frac{1}{\sqrt{\text{vol}(B)}} & \text{if } i \in B
+\end{cases} \]
 
-\item Similarly,we can get the result $\overline{\mathbf{W}} = \mathbf{Y}\overline{\mathbf{X}}^{\top}\left(\overline{\mathbf{X}}\overline{\mathbf{X}}^{\top} +\lambda\mathbf{I} \right)^{-1}$
-\end{enumerate}
+Then, we can express $\mathbf{u}^T L \mathbf{u}$ and $\mathbf{u}^T D \mathbf{u}$ as follows:
+
+\[ \mathbf{u}^T L \mathbf{u} = \frac{1}{2} \sum_{i,j} w_{ij}(u_i - u_j)^2 = \sum_{i \in A, j \in B} w_{ij} \left( \frac{1}{\sqrt{\text{vol}(A)}} + \frac{1}{\sqrt{\text{vol}(B)}} \right)^2 \]
+
+\[ \mathbf{u}^T D \mathbf{u} = \sum_{i} d_i u_i^2 = \sum_{i \in A} \frac{d_i}{\text{vol}(A)^2} + \sum_{j \in B} \frac{d_j}{\text{vol}(B)^2} =\frac{1}{\text{vol}(A)} +\frac{1}{\text{vol}(B)} \]
+
+Because the sums of the degrees for vertices in each set $A$ and $B$ equal the volume of those sets, respectively.
+
+Therefore, the normalized cut (Ncut) for the partition of the graph into sets $A$ and $B$ is given by:
+
+\[ \text{Ncut}(A, B) = \frac{\mathbf{u}^T L \mathbf{u}}{\mathbf{u}^T D \mathbf{u}} = \sum_{i \in A, j \in B} w_{ij} \left( \frac{1}{\text{vol}(A)} + \frac{1}{\text{vol}(B)} \right) \]
+
+This concludes the proof that the expression $\frac{\mathbf{u}^T L \mathbf{u}}{\mathbf{u}^T D \mathbf{u}}$ is equal to the normalized cut value.
+
 %------------------------------------------------
 
 \section*{Question 4:Semi-supervised Learning }
@@ -236,22 +332,19 @@ Let the gradient equals to zero, we can get the optimal $\overline{\mathbf{W}} =
 \end{enumerate}
 \end{problem}
 \section*{Answer}
-By calculating the gradient, we get:
-\begin{equation*}
-	W \Phi^{\top}\Phi - Y\Phi + \lambda W = 0
-\end{equation*}
-\begin{equation*}
-	W = Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}
-\end{equation*}
-Considering $\mathbf{K} = \Phi^\top\Phi$ and $\mathbf{k}(\mathbf{x}) = \Phi\phi(x)^\top$.
-We can predict $y$ by:
-\begin{equation*}
-	\begin{aligned}
-		y &= W\phi(x) \\
-		  &= [Y \Phi (\Phi^{\top}\Phi + \lambda I)^{-1}]\phi(x) \\
-		  &= Y(K + \lambda I)^{-1}k(x)
-	\end{aligned}
-\end{equation*}
+\begin{enumerate}[(\itshape a\normalfont)]
+	\item\begin{enumerate}[i)]
+	\item 
+\[ J(w) = \frac{1}{2} \sum_{i=1}^l (y_i - w^T x_i)^2 + \frac{\lambda}{2} w^T (D-A) w \](D is the degree matrix of the graph)
+\item The gradient is: \[ \nabla_w J(w) = \sum_{i=1}^l (w^T x_i - y_i) x_i + \lambda (D-A) w \]
+\item The closed form is: \[ w = (X^T X + \lambda (D-A))^{-1} X^T Y \]
+\end{enumerate}
+\item \begin{enumerate}[i)]
+	\item Since the degree matrix D contains the information of the degree, so using $\mathbf{D}^{-1}\mathbf{W}$ will make each data sample have the same impact on its neighbor.
+	\item Since we want to keep the same label for the labeled data.
+	\item One-hot Encoding is one possible method.
+\end{enumerate}
+\end{enumerate}
 \section*{Question 5: Graph Neural Networks}
 
 \begin{problem}
@@ -269,13 +362,63 @@ We can predict $y$ by:
         \item semi-supervised learning
     \end{itemize}
 \end{enumerate}
+
 \end{problem}
 
 \section*{Answer}
 \begin{enumerate}[(\itshape a\normalfont)]
-	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
-	\item \textbf{Time complexity:} ${\mathcal O}(ND^{2}+D^{3})$ \textbf{Space complexity:} ${\mathcal O}(ND+D^{2})$
-	\item \textbf{Time complexity:} ${\mathcal O}(BDH_1+BH_1H_2+BH_2K)$ \textbf{Space complexity:} ${\mathcal O}(BD+BH_1+BH_2+BK+DH_1+H_1H_2+H_2K)$
+\item Since $\hat{\mathbf{A}}$ is always invertible, we can calculate the EVD of the matrix as $\hat{\mathbf{A}}$ = $\mathbf{U} \Lambda \mathbf{U}^{-1}$, so $\hat{\mathbf{A}}^c = \mathbf{U} \Lambda^C \mathbf{U}^{-1}$
+\item Here is the notation.\footnote{Some of this answer were referenced from\url{https://www.cs.mcgill.ca/~wlh/grl_book/files/GRL_Book-Chapter_6-GNNs_in_Practice.pdf}}
+
+$\begin{array}{|c|l|}
+	\hline
+	\textbf{Notation} & \textbf{Description} \\
+	\hline
+	V_{\text{train}} & \text{Set of nodes used for training.} \\
+	\hline
+	z_u & \text{Embedding of node u.} \\
+	\hline
+	y_u & \text{Class label of node u .} \\
+	\hline
+	T & \text{Set of graphs used for training.} \\
+	\hline
+	z_{G_i} & \text{Graph-level embedding of graph } G_i. \\
+	\hline
+	y_{G_i} & \text{Target value for training graph } G_i  \\
+	\hline
+	E & \text{Set of edges, representing all possible node pairs.} \\
+	\hline
+	y_{uv} & \text{Actual label indicating whether a link exists between node pair } (u, v). \\
+	\hline
+	\hat{y}_{uv} & \text{Predicted probability that a link exists between node pair } (u, v). \\
+
+	\hline
+	
+	\end{array}
+$	
+
+Loss function for node classification: 
+\begin{equation*}
+	L = -\sum_{u \in V_{\text{train}}} \log(\text{softmax}(z_u)[y_u])
+\end{equation*}
+Loss function for graph classification:
+\begin{equation*}
+	L = -\sum_{G_i \in T} \log(\text{softmax}(z_{G_i})[y_{G_i}])
+\end{equation*}	
+Loss function for link prediction:
+\begin{equation*}
+L = -\sum_{(u, v) \in E} y_{uv} \log(\hat{y}_{uv}) + (1 - y_{uv}) \log(1 - \hat{y}_{uv})
+\end{equation*}	
+\newpage
+\item\textbf{Parametric method}:Linear Regression, Logistic Regression
+
+\textbf{Nonparametric method }:K-Nearest Neighbors,Decision Trees
+
+\textbf{Inductive Learning}:Support Vector Machines,Random Forest
+
+\textbf{Transductive Learning}:Label Propagation,Label Spreading
+
+\textbf{Semi-supervised Learning}:Autoencoders,Semi-Supervised SVM
 \end{enumerate}
 
 
@@ -291,16 +434,24 @@ We can predict $y$ by:
 \end{enumerate}
 \end{problem}
 \section*{Answer}
-By using the Hint, 
-\begin{equation*}
-	\begin{aligned}
-		\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t})& =\mathcal{L}(H_{t}+\alpha_{t+1}h_{t+1})-\mathcal{L}(H_{t})l  \\
-		&\leq\alpha_{t+1}\left<\nabla \mathcal{L}(H_{t}),h_{t+1}\right>+\frac{L\alpha _{t+1}^{2}\|h_{t+1}\|^{2}}{2} \\
-		& = -\frac{\langle\nabla \mathcal{L}(H_{t}),h_{t+1}\rangle^{2}}{2L\|h_{t+1}\|^{2}}.
-	\end{aligned}
-\end{equation*}
-Considering when $h_{T+1}=0$, the algorithm will terminate at time $T$, otherwise, which means $h_{t+1}\neq 0$ for all $t$
- as $\mathcal{L}(H_{t+1})-\mathcal{L}(H_{t}) \rightarrow 0$,  $\operatorname*{lim}_{t\to\infty}\langle\nabla\mathcal{L}(H_{t}),h_{t+1}\rangle$ will also converge to 0.
+\begin{enumerate}[(\itshape a\normalfont)]
+\item \begin{enumerate}[$\bullet$]
+\item  Calculate the distance between the datas.(e.g.Euclidean distance)
+\item  Build Gram matrix $B$ , where \[
+	b_{ij} = -\frac{1}{2}(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \bar{d}_{\cdot\cdot}^2)
+	\]
+\item Calculate EVD of $B$,so \[
+	B = V \Lambda V^T
+	\]
+\item Choose the eigen vector for the top $k$ eigenvectors, then get the low dimension \[
+	X = V_k \sqrt{\Lambda_k}
+	\]
+\end{enumerate}
+\item Firstly, we can use t-SNE to map it into low dimension. And then we find its neighbors and calculate the center of there neighbors as the new sample.
+\item We can use Non-Linear Dimensionality Reduction to map it into low dimension and find whetehr the data has enough neighbors. Outliers may has no neighbor.
+
+\end{enumerate}
+
 \section*{Question 7: Generative Models}
 
 \begin{problem}
@@ -315,20 +466,36 @@ Considering when $h_{T+1}=0$, the algorithm will terminate at time $T$, otherwis
 \end{problem}
 \section*{Answer}
 \begin{enumerate}[(\itshape a\normalfont)]
-	\item By defineing $\mathbf{x} = (x_1,x_2,\cdots,x_d, 1)$ and $\mathbf{w} = (w_1,w_2,\cdots,x_n, b)$
-	\item $ \nabla \mathbf{w}= -2 \cdot (\mathbf{y_i} - \mathbf{x_i} \cdot \mathbf{w}) \mathbf{x_i}$
-	\item - (h) The code and figure is available in \href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part1.ipynb}{Part 1} and 
-	\href{https://github.com/fanyimeng0/AIR6002/blob/main/HW1/Code/notebook_7_part2.ipynb}{Part 2}(Github Link)
-	\begin{enumerate}[(\itshape 1\normalfont)]
-		\item As strating point varies, the distance between start points and the convergent point changes and converge time varies.
-		\item Dataset 1 is more regular, so easier to converge.
-	\end{enumerate}
-	\setcounter{enumi}{6}
-	\item For small $\eta$, Training loss decreases as the epochs grows.
-	\setcounter{enumi}{8}
-	\item Even closed-form solution exists, SGD is still useful since SGD can work on high-dimension data, in this case calculating inverse will have a huge cost. Also it performs well when parameter needs to be updated as new data added. 
-	\item By setting a threshold of loss function.
-	\item Perceptron converges faster than SGD algorithms for linear model.
+\item	\[ \text{ELBO} = \mathbb{E}_{\mathbf{z}\sim q_{\phi}(\mathbf{z};\mathbf{x})}[\log p_{\theta}(\mathbf{x}|\mathbf{z})]-D_{KL}(q_{\phi}(\mathbf{z}|\mathbf{x})||p(\mathbf{z})) \]
+Where:
+
+- $p{\theta}(x|z)$ is the likelihood of observing data $x$ given latent variables $z$.
+
+- $q{\phi}(z|x)$ is the variational distribution (encoder) that approximates the true posterior distribution of latent variables given data.
+
+- $p(z)$ is the prior distribution of latent variables.
+
+- $\text{KL}(q{\phi}(z|x)||p{\theta}(z))$ is the Kullback-Leibler (KL) divergence between the variational distribution and the prior.
+
+\item Generator's objective:
+\[ \min_G \max_D V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}(x)}[\log D(x)] + \mathbb{E}_{z \sim p(z)}[\log(1 - D(G(z)))] \]
+
+Discriminator's objective:
+\[ \min_D \max_G V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}(x)}[\log D(x)] + \mathbb{E}_{z \sim p(z)}[\log(1 - D(G(z)))] \]
+
+Where:
+
+- $p_{\text{data}}(x)$ is the true data distribution.
+
+- $p(z)$ is the prior distribution of noise variables $z$.
+
+- $G(z)$ is the generated data sample.
+
+- $D(x)$ represents the discriminator's output indicating the probability that $x$ is a real data sample.
+
+\item- \textbf{Diffusion models} describe the evolution of a stochastic process over time, where the process starts from an initial distribution and evolves according to a diffusion process. 
+
+- \textbf{Langevin dynamics},  is a type of stochastic differential equation that describes the motion of particles subjected to random forces. In the context of probabilistic modeling, Langevin dynamics can be used for sampling from probability distributions by simulating the motion of particles according to the gradients of the log-probability density.
 \end{enumerate}
 \section*{Question 8: Graph Convolutional Network}
 
@@ -343,13 +510,9 @@ Considering when $h_{T+1}=0$, the algorithm will terminate at time $T$, otherwis
 	\end{enumerate}
 \end{problem}
 \section*{Answer}
-\begin{enumerate}[(\itshape a\normalfont)]
-	\item \textbf{False}.  When n=1, $G(\mathcal{F},n)$ can take the value 2 for $f_1$ predict 1 and $f_2$ predict -1, but $n^2$ equals to 1.
-	\item \textbf{True}. 4 points can be scattered by 4 sides of rectangle.
-	\item \textbf{False}. VC dimension of a circle is 3.
-	\item \textbf{False}. VC dimension of 1-nearest neighbor classifier is infinity.
-	\item \textbf{False}. For $n=1$,$G(\mathcal{F},n)$ is 2 but $\left(\frac{en}d\right)^d<1$ for $d>e$
-\end{enumerate}
+
+All these parts are shown in code part.
+
 
 
 
