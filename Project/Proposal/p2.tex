@@ -13,6 +13,8 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 
+
+\usepackage{array}
 \newcommand{\ie}{i.e.}
 \newcommand{\eg}{e.g.}
 \newcommand{\reffig}[1]{Figure~\ref{#1}}
@@ -103,10 +105,25 @@ We aim to verify the extent of this performance improvement through specific exp
 \section{Tools and datasets used}
 We plan to use Dataset \cite{yang2023mm} to complete this work. This dataset contains datas of figures when human performing various actions. Additionally, it encompasses many other modalities of data like lidar.
 If feasible, we consider extending this work to include these other modalities as well.
-
+\begin{table}[htbp]
+  \centering
+  \caption{Model Accuracy Comparison}
+  \begin{tabular}{@{} lcc @{}}
+  \toprule
+  Action/Accuracy & Rmodal-Rdata & Gmodal-Rdata  \\ 
+  \midrule
+  Bending   & 99.53\% & 99.07\% \\
+  Kicking   & 98.60\% & 98.60\% \\
+  Standing  & 100.00\% & 14.22\% \\
+  Waving    & 99.54\% & 99.54\% \\
+  Squatting & 100.00\% & 100.00\% \\
+  \bottomrule
+  \end{tabular}
+  \end{table}
 We plan to use \cite{chen2023llava} to generate new data, which combines three multimodal skills of pre-built AI models
 without additional model training: visual chat of LLaVA , image segmentation
 from SEEM , and image generation and editing from GLIGEN . So the generated data will be more closed to real data.
+
 \bibliographystyle{abbrvnat}
 \bibliography{myreferences}
 \end{document}
